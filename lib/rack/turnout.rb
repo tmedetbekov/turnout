@@ -15,9 +15,9 @@ class Rack::Turnout
     reload_settings
 
     if on?(env)
-      if Rails.application.class.to_s.split("::")[0] == 'MobilnikConnector' && env['CONTENT_TYPE'] == 'application/xml'
+      if Rails.application.class.to_s.split("::")[0] == 'MobilnikConnector' || env['CONTENT_TYPE'] == 'application/xml'
         [200, {'Content-Type' => 'application/xml'}, [xml_content(env['action_dispatch.request.request_parameters'])]]
-      elsif Rails.application.class.to_s.split("::")[0] == 'GeopayUssdConnector' && env['CONTENT_TYPE'] == 'application/json'
+      elsif Rails.application.class.to_s.split("::")[0] == 'GeopayUssdConnector' || env['CONTENT_TYPE'] == 'application/json'
         [200, {'Content-Type' => 'application/json'}, [json_content]]
       else
         [503, {'Content-Type' => 'text/html', 'Content-Length' => content_length}, [content]]
